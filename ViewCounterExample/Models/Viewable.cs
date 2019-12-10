@@ -9,6 +9,7 @@ namespace ViewCounterExample.Models
             Views = new List<View>();
         }
 
+        public int ViewsCount { get; set; }
         public List<View> Views { get; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,14 +24,14 @@ namespace ViewCounterExample.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var posts = _ctx.Posts.Include(x => x.Views).ToList();
+            var posts = _ctx.Posts.ToList();
             return View(posts);
         }
 
         [HttpGet]
         public IActionResult Images()
         {
-            var images = _ctx.Images.Include(x => x.Views).ToList();
+            var images = _ctx.Images.ToList();
             return View(images);
         }
 
@@ -44,7 +43,7 @@ namespace ViewCounterExample.Controllers
                 .FirstOrDefault(x => x.Id == id);
 
             post.Views.Add(new Models.View { UserId = UserId });
-
+            post.ViewsCount++;
             await _ctx.SaveChangesAsync();
 
             return View(post);
@@ -58,9 +57,15 @@ namespace ViewCounterExample.Controllers
             {
                 return NoContent();
             }
-            
-            image.Views.Add(new Models.View { UserId = UserId });
-            await _ctx.SaveChangesAsync();
+
+            if (!_ctx.Views.Any(x =>
+                    EF.Property<int>(x, "ImageId") == image.Id
+                    && x.UserId == UserId))
+            {
+                image.Views.Add(new Models.View { UserId = UserId });
+                image.ViewsCount++;
+                await _ctx.SaveChangesAsync();
+            }
 
             var filePath = Path.Combine(_env.WebRootPath, "img", name);
             return new FileStreamResult(new FileStream(filePath, FileMode.Open, FileAccess.Read), "image/jpg");
