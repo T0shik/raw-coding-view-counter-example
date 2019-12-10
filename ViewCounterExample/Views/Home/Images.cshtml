@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ViewCounterExample.Models.Image>
+
+@{ 
+
+}
+
+    <div>
+        @foreach(var image in Model)
+        {
+            <h1>@image.Name</h1>
+            <p>Views: <strong>@image.Views.Count</strong></p>
+        }
+    </div>

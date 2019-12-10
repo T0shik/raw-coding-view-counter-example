@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ViewCounterExample.Models.Post>
+
+@{ 
+
+}
+
+    <div>
+        @foreach(var post in Model)
+        {
+            <h1>@post.Title</h1>
+            <p>Views: <strong>@post.Views.Count</strong></p>
+        }
+    </div>

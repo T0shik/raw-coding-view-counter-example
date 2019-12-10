@@ -1,0 +1,12 @@
+﻿@model ViewCounterExample.Models.Post
+
+@{ 
+
+}
+
+    <h1>Post @Model.Title</h1>
+
+@foreach (var v in Model.Views)
+{
+    <p>@v.UserId</p>
+}
