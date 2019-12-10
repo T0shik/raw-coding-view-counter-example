@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace ViewCounterExample.Controllers
 {
-    public class BaseController : Controller
+    public abstract class BaseController : Controller
     {
         //Get UserId from Claims
         protected string UserId => HttpContext
